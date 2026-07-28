@@ -24,14 +24,6 @@ import {
   MAX_BASKET_SUBJECTS,
 } from '@/utils/studentPayload';
 
-// StudentProfile and StudentRegistrationWizard are only rendered
-// conditionally (profile modal / add-student modal), but were previously
-// statically imported at the top of this file — meaning both got bundled
-// into this route's initial JS on every page load, whether or not the user
-// ever opened either modal. Loading them via next/dynamic (ssr: false)
-// splits them into separate chunks that load only when actually needed,
-// while everything else in this file stays exactly as it was — same file,
-// no new files added.
 const StudentProfile = dynamic(
   () => import('@/components/students/StudentProfile'),
   {

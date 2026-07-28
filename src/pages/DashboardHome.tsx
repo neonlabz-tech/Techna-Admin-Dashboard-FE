@@ -18,20 +18,6 @@ import { normalizeAlSubjects } from '@/utils/studentPayload';
 
 const COLORS = ['#6366f1', '#8b5cf6', '#06b6d4', '#10b981', '#f59e0b'];
 
-// ---------------------------------------------------------------------------
-// recharts is NOT statically imported at the top of this file anymore.
-// Previously `import { BarChart, ... } from 'recharts'` at the top meant the
-// entire (heavy) charting library got bundled into this page's initial JS,
-// even before there was any data to chart.
-//
-// Instead, next/dynamic is used with an inline loader that pulls in
-// 'recharts' only when this component mounts on the client, and the chart
-// component itself is built right here inside the .then() callback. This
-// keeps everything in this single file — no extra component files — while
-// still splitting recharts into its own chunk that loads after the page's
-// core JS, instead of blocking the initial bundle.
-// ---------------------------------------------------------------------------
-
 const ModuleEnrollmentChart = dynamic(
   () =>
     import('recharts').then((mod) => {
