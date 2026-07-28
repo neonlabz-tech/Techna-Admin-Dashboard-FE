@@ -6,7 +6,6 @@ import {
   CheckCircle, Clock, AlertCircle, Loader2, RefreshCw, Plus, X,
   ChevronDown, ChevronUp, Users, Edit2,
 } from 'lucide-react';
-import jsPDF from 'jspdf';
 import toast from 'react-hot-toast';
 import { paymentApi, PaymentRecord, CreatePaymentPayload } from '@/api/payment.api';
 import api from '@/lib/axios';
@@ -130,8 +129,6 @@ function extractModuleRef(m: unknown): ModuleRef {
 }
 
 function extractStudentModules(s: Record<string, unknown>): unknown[] {
-  // Collect from ALL relevant fields and merge them to maximize module resolution.
-  // The student record may store module IDs in one field and subject names in another.
   const candidates = [
     s.modules,
     s.enrolledModules,
@@ -154,7 +151,6 @@ function extractStudentModules(s: Record<string, unknown>): unknown[] {
       : undefined,
   ];
 
-  // Merge all non-empty arrays and deduplicate by stringified value
   const seen = new Set<string>();
   const merged: unknown[] = [];
   for (const c of candidates) {
@@ -200,43 +196,25 @@ function PaymentModal({
     notes:     initialData?.notes     ?? '',
   });
 
-  
-  
-  
   const [selectedModuleIds, setSelectedModuleIds] = useState<string[]>([]);
   const [subjectFees,       setSubjectFees]       = useState<Record<string, string>>({});
 
-  
-  
-  
   const [includedFeeIds, setIncludedFeeIds] = useState<string[]>([]);
   const [feeAmounts,     setFeeAmounts]     = useState<Record<string, string>>(
     Object.fromEntries(ADDITIONAL_FEES.map(f => [f.id, String(f.defaultAmount)]))
   );
 
-  
-  
-  
-  
-  
-  
   const [existingRecordMap, setExistingRecordMap] = useState<Record<string, PaymentRecord>>({});
 
   useEffect(() => {
     (async () => {
       try {
-        
         const [sRaw, mRaw]: [any, any] = await Promise.all([
           api.get('/students'),
           api.get('/modules'),
         ]);
         const sArr = extractArrayResponse(sRaw);
         const mArr = extractArrayResponse(mRaw);
-
-        
-        
-        
-        
 
         const approvedStudents = sArr.filter((s) =>
           isApprovedStudent(s as Record<string, unknown>)
@@ -267,21 +245,16 @@ function PaymentModal({
   }, []);
 
   const loadEnrollmentForStudent = useCallback(async (s: StudentOption) => {
-    
-    
-    
     const matchedRefLabels = new Set<string>();
 
     const nameBasedIds = s.moduleRefs.length > 0
       ? allModules
           .filter(m => s.moduleRefs.some(ref => {
             const label = ref.name ?? ref.id ?? '';
-            // Direct ID match (e.g. ref stores the actual module ObjectId)
             if (ref.id && ref.id === m.id) {
               matchedRefLabels.add(label);
               return true;
             }
-            // Name-based matching (case-insensitive, normalized)
             const normM = normalizeModuleName(m.name);
             if (ref.name) {
               const normR = normalizeModuleName(ref.name);
@@ -300,7 +273,6 @@ function PaymentModal({
                 return true;
               }
             }
-            // Also try matching ref.id as a name (student may store subject names in modules array)
             if (ref.id && ref.id !== m.id) {
               const normRefId = normalizeModuleName(ref.id);
               if (normRefId && (normM === normRefId || normM.includes(normRefId) || normRefId.includes(normM))) {
@@ -317,7 +289,6 @@ function PaymentModal({
       setRegisteredModuleIds(nameBasedIds);
     }
 
-    
     const missing = s.moduleRefs
       .map(ref => ref.name ?? ref.id ?? '')
       .filter(label => label && !matchedRefLabels.has(label));
@@ -335,15 +306,9 @@ function PaymentModal({
         r.status === 'fulfilled' ? r.value : []
       );
       const paymentIds = [...new Set(merged.map(p => p.moduleId).filter(Boolean))];
-      
-      
       setRegisteredModuleIds(prev => [...new Set([...prev, ...paymentIds])] as string[]);
 
       if (isEdit && initialData) {
-        
-        
-        
-        
         const group = merged.filter(p => p.paidDate === initialData.paidDate);
         if (!group.some(p => p.id === initialData.id)) group.push(initialData);
 
@@ -374,13 +339,10 @@ function PaymentModal({
         setFeeAmounts(feeAmountsInit);
         setRegisteredModuleIds(prev => [...new Set([...prev, ...subjIds])]);
       } else {
-        
-        
         setIsFirstPayment(merged.length === 0);
         setIncludedFeeIds(merged.length === 0 ? ['admission'] : []);
       }
     } catch {
-      
     } finally {
       setFetchingMods(false);
     }
@@ -406,7 +368,6 @@ function PaymentModal({
     enrollmentInitedRef.current = true;
     const s = students.find(x => x._id === form.studentId || x.studentId === form.studentId);
     if (s) loadEnrollmentForStudent(s);
-  
   }, [isEdit, students, allModules]);
 
   const filteredModules = useMemo(() => {
@@ -426,7 +387,6 @@ function PaymentModal({
     !fetchingMods &&
     registeredModuleIds.length === 0;
 
-  
   const toggleSubject = (moduleId: string) => {
     setSelectedModuleIds(prev => {
       if (prev.includes(moduleId)) {
@@ -439,7 +399,6 @@ function PaymentModal({
     });
   };
 
-  
   const toggleFee = (feeId: string) => {
     setIncludedFeeIds(prev =>
       prev.includes(feeId) ? prev.filter(id => id !== feeId) : [...prev, feeId]
@@ -459,12 +418,6 @@ function PaymentModal({
   }, [selectedModuleIds, subjectFees, includedFeeIds, feeAmounts]);
 
   const handleSubmit = async () => {
-    
-    
-    
-    
-    
-    
     if (!form.studentId || !form.paidDate) {
       toast.error('Please select a student and payment date');
       return;
@@ -476,7 +429,6 @@ function PaymentModal({
 
     const student = students.find(s => s._id === form.studentId);
 
-    
     const subjectLineItems: { key: string; payload: CreatePaymentPayload }[] = selectedModuleIds.map((id) => {
       const moduleRec = allModules.find(m => m.id === id);
       return {
@@ -497,12 +449,6 @@ function PaymentModal({
       };
     });
 
-    
-    
-    
-    
-    
-    
     const feeLineItems: { key: string; payload: CreatePaymentPayload }[] = includedFeeIds.map(id => {
       const fee = ADDITIONAL_FEES.find(f => f.id === id)!;
       return {
@@ -526,7 +472,6 @@ function PaymentModal({
 
     setSaving(true);
     try {
-     
       let existingPayments: PaymentRecord[] = [];
       if (!isEdit) {
         try {
@@ -543,7 +488,7 @@ function PaymentModal({
             seen.add(key);
             return true;
           });
-        } catch { /* proceed with empty */ }
+        } catch { }
       }
 
       let updatedCount = 0;
@@ -556,7 +501,6 @@ function PaymentModal({
           onSuccess(result);
           updatedCount++;
         } else {
-          // Duplicate check: same module + same month + paid status
           const paidMonth = item.payload.paidDate?.slice(0, 7);
           const isDuplicate = !isEdit && item.payload.moduleId && existingPayments.some(
             p => (p.moduleId === item.payload.moduleId || p.moduleName === item.payload.moduleName) &&
@@ -827,7 +771,6 @@ function PaymentModal({
             </select>
           </div>
 
-          
           <div className="flex flex-col gap-1">
             <Label text="Batch" />
             <select
@@ -910,10 +853,6 @@ function StudentTableRow({
     return earliest;
   }, [payments, year]);
 
-  
-  
-  
-  
   const fetchTracking = useCallback(async () => {
     setLoadingTrack(true);
     try {
@@ -936,10 +875,6 @@ function StudentTableRow({
     await fetchTracking();
   }, [tracking, fetchTracking]);
 
-  
-  
-  
-  
   const paymentsKey = useMemo(
     () => payments.map(p => `${p.id}:${p.amount}:${p.status}:${p.paidDate}`).join('|'),
     [payments]
@@ -949,7 +884,6 @@ function StudentTableRow({
     if (isFirstRender.current) { isFirstRender.current = false; return; }
     setTracking(null);
     if (expanded) fetchTracking();
-    
   }, [paymentsKey]);
 
   const paidSet    = useMemo(() => new Set(tracking?.paidMonths    ?? []), [tracking]);
@@ -1177,8 +1111,6 @@ function PaymentMobileCard({
     return earliest;
   }, [payments, year]);
 
-  
-  
   const fetchTracking = useCallback(async () => {
     setLoadingTrack(true);
     try {
@@ -1204,10 +1136,6 @@ function PaymentMobileCard({
     await fetchTracking();
   }, [tracking, fetchTracking]);
 
-  
-  
-  
-  
   const paymentsKey = useMemo(
     () => payments.map(p => `${p.id}:${p.amount}:${p.status}:${p.paidDate}`).join('|'),
     [payments]
@@ -1217,7 +1145,6 @@ function PaymentMobileCard({
     if (isFirstRender.current) { isFirstRender.current = false; return; }
     setTracking(null);
     if (expanded) fetchTracking();
-    
   }, [paymentsKey]);
 
   const paidSet = useMemo(() => new Set(tracking?.paidMonths ?? []), [tracking]);
@@ -1363,10 +1290,8 @@ function PaymentMobileCard({
 }
 
 export default function PaymentsPage() {
-  
   const { students, fetchStudents } = useDataStore();
 
-  
   const BATCHES = Array.from(
     new Set(students.map((s: any) => s.batch).filter(Boolean))
   ) as string[];
@@ -1405,7 +1330,7 @@ export default function PaymentsPage() {
 
   useEffect(() => {
     fetchPayments();
-    fetchStudents(); 
+    fetchStudents();
   }, [fetchPayments, fetchStudents]);
 
   const allModules = Array.from(
@@ -1472,7 +1397,8 @@ export default function PaymentsPage() {
   const totalPaid    = filtered.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0);
   const totalPending = filtered.filter(p => p.status !== 'paid').reduce((s, p) => s + p.amount, 0);
 
-  const generatePaymentSlip = (payment: PaymentRecord) => {
+  const generatePaymentSlip = async (payment: PaymentRecord) => {
+    const { default: jsPDF } = await import('jspdf');
     const drawPDF = (logoDataUrl?: string) => {
       const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
       const W   = pdf.internal.pageSize.getWidth();
@@ -1500,7 +1426,6 @@ export default function PaymentsPage() {
     console.warn('Logo could not be added to PDF:', err);
   }
 }
-      
 
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(9.5);
@@ -1627,14 +1552,14 @@ export default function PaymentsPage() {
       });
   };
 
-  
-  const generateStudentAllSlip = (
+  const generateStudentAllSlip = async (
     studentPayments: PaymentRecord[],
     studentName: string,
     studentCode: string,
   ) => {
     if (studentPayments.length === 0) { toast.error('No records to export'); return; }
 
+    const { default: jsPDF } = await import('jspdf');
     const drawPDF = (logoDataUrl?: string) => {
       const pdf     = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
       const W       = pdf.internal.pageSize.getWidth();
@@ -1814,9 +1739,10 @@ export default function PaymentsPage() {
       });
   };
 
-  const generateAllPDF = () => {
+  const generateAllPDF = async () => {
     if (filtered.length === 0) { toast.error('No records to export'); return; }
 
+    const { default: jsPDF } = await import('jspdf');
     const drawPDF = (logoDataUrl?: string) => {
       const pdf    = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
       const W      = pdf.internal.pageSize.getWidth();
@@ -2028,7 +1954,6 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
   return (
     <div className="p-3 pb-20 sm:p-6 sm:pb-6">
 
-     
       <div className="mb-4 flex flex-row items-start justify-between gap-3 sm:mb-6 sm:items-center">
         <div>
           <h1 className="text-lg font-bold text-gray-800 sm:text-2xl">Payments</h1>
@@ -2059,7 +1984,6 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
         <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600">{error}</div>
       )}
 
-      {}
       <div className="mb-4 grid grid-cols-1 gap-2 md:mb-6 md:grid-cols-3 md:gap-4">
         <div className="rounded-lg border border-gray-100 bg-white p-3 shadow-sm sm:rounded-2xl sm:p-4">
           <div className="flex items-center gap-3">
@@ -2096,7 +2020,6 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
         </div>
       </div>
 
-      {}
       <div className="mb-4 flex flex-wrap items-start gap-2 sm:mb-5 sm:gap-3 xl:flex-nowrap">
         <div className="relative w-full flex-none xl:flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -2213,7 +2136,6 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
             </div>
       </div>
 
-     
       <div className="space-y-3 min-[1300px]:hidden">
         {studentGroups.map(s => (
           <PaymentMobileCard
@@ -2287,7 +2209,6 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
         </div>
       </div>
 
-      
       <button
         type="button"
         onClick={() => setShowAddModal(true)}
@@ -2297,7 +2218,6 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
         <CreditCard className="h-5 w-5" />
       </button>
 
-      
       {showAddModal && (
         <PaymentModal
           batches={BATCHES}
@@ -2306,7 +2226,6 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
         />
       )}
 
-      
       {editPayment && (
         <PaymentModal
           batches={BATCHES}
