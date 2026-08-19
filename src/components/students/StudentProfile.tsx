@@ -893,7 +893,7 @@ export default function StudentProfile({
                         {formatStudentId(s.studentId)}
                       </p>
                       <p className="text-[12px] text-indigo-100">
-                        {getValue(s.batch)}
+                        A/L {getValue(s.batch)} Batch
                       </p>
                     </div>
                   </div>
@@ -976,7 +976,7 @@ export default function StudentProfile({
 
                 <div className="flex h-8 items-center justify-center rounded-b-2xl bg-slate-50 px-4 text-center">
                   <p className="text-xs text-blue-400">
-                    Techna - School Management System
+                    My Techna
                   </p>
                 </div>
               </div>
