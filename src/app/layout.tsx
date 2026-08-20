@@ -4,7 +4,7 @@ import '../index.css';
 
 export const metadata: Metadata = {
   title: 'Techna',
-  description: 'School Management System',
+  description: 'Techna Management System',
   icons: {
     icon: '/favicon.png',
     shortcut: '/favicon.png',
