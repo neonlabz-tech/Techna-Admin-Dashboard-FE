@@ -77,6 +77,8 @@ export const OL_GRADE_OPTIONS = [
 ];
 
 const SUBJECT_ALIASES: Record<string, string> = {
+  'ICT': 'Information Communication Technology',
+  'Information & Communication Technology (ICT)': 'Information Communication Technology',
   'Science for Technology': 'Science For Technology',
   'Information & Communication Technology': 'Information Communication Technology',
   'Agricultural Technology': 'Agricultural Science',
