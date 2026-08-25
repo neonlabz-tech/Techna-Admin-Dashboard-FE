@@ -206,7 +206,7 @@ export default function QRScanPage() {
             <input
               value={query} onChange={e => setQuery(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSearch()}
-              placeholder="Student ID (e.g. May24#0001) or name…"
+              placeholder="Student ID (e.g. ESI | 01 | 2026) or name…"
               className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
             />
           </div>
