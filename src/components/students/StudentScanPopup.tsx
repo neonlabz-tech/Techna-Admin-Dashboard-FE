@@ -368,7 +368,7 @@ const handlePaySubmit = async (e: React.FormEvent) => {
                         <p className="text-sm font-medium text-gray-800">
                           {m.name}
                         </p>
-                        <p className="text-xs text-gray-400">{m.teacherName}</p>
+                        {/* <p className="text-xs text-gray-400">{m.teacherName}</p> */}
                       </div>
                       <div className="flex gap-2">
                         <button
@@ -551,7 +551,7 @@ const handlePaySubmit = async (e: React.FormEvent) => {
                         value={m.id}
                         disabled={alreadyPaid}
                       >
-                        {m.name} — LKR {m.fee.toLocaleString()}
+                        {m.name}
                         {alreadyPaid ? " (Already Paid)" : ""}
                       </option>
                     );

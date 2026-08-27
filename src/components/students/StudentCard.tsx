@@ -131,7 +131,7 @@ export default function StudentCard({
               {formatStudentId(student.studentId)}
             </p>
 
-            <p className="break-words text-xs text-gray-500">{student.batch}</p>
+            <p className="break-words text-xs text-gray-500">A/L {student.batch} Batch</p>
           </div>
         </div>
 

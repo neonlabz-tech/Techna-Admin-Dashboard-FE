@@ -11,7 +11,7 @@ export default function RegisterPage() {
             <GraduationCap className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-white">Techna</h1>
-          <p className="text-indigo-300 mt-1">School Management System</p>
+          <p className="text-indigo-300 mt-1">My Techna</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-2xl p-8 text-center">

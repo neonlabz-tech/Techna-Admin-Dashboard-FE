@@ -4,7 +4,6 @@ import { useDataStore } from '../store/dataStore';
 import type { Student, PaymentRecord } from '../types';
 import { formatStudentId } from '../utils/studentId';
 import { QrCode, Search, ScanLine, Camera, CameraOff } from 'lucide-react';
-import jsQR from 'jsqr';
 import StudentScanPopup from '../components/students/StudentScanPopup';
 
 export default function QRScanPage() {
@@ -19,6 +18,8 @@ export default function QRScanPage() {
   const rafRef = useRef<number>(0);
   const studentsRef = useRef(students);
   const pausedRef = useRef(false);
+  const jsQRRef = useRef<any>(null);
+  
   useEffect(() => { studentsRef.current = students; }, [students]);
   useEffect(() => { fetchStudents(); }, []);
 
@@ -45,6 +46,12 @@ export default function QRScanPage() {
 
     const startCamera = async () => {
       try {
+        // Dynamically import jsQR only when camera is activated
+        if (!jsQRRef.current) {
+          const jsQRModule = await import('jsqr');
+          jsQRRef.current = jsQRModule.default;
+        }
+        
         const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
         streamRef.current = stream;
         if (videoRef.current) {
@@ -80,7 +87,7 @@ export default function QRScanPage() {
       canvas.height = video.videoHeight;
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
+      const code = jsQRRef.current?.(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'dontInvert' });
       if (code?.data) {
         console.log('QR raw data:', code.data);
         try {
@@ -206,7 +213,7 @@ export default function QRScanPage() {
             <input
               value={query} onChange={e => setQuery(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSearch()}
-              placeholder="Student ID (e.g. May24#0001) or name…"
+              placeholder="Student ID (e.g. ESI | 01 | 2026) or name…"
               className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
             />
           </div>

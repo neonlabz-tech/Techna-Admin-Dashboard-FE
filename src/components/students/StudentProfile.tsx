@@ -138,7 +138,13 @@ const getImageFormat = (dataUrl: string) => {
 
 
 const findStudentPhotoUrl = (student: any): string => {
-  return student?.profilePhoto || student?.avatar || '';
+  return (
+    student?.avatar ||
+    student?.profilePhoto ||
+    student?.profile_image ||
+    student?.profileImage ||
+    ''
+  );
 };
 
 const loadImageThroughCanvas = async (src: string): Promise<string | null> => {
@@ -195,6 +201,27 @@ const loadStudentPhotoForPdf = async (
   return null;
 };
 
+const loadPoppinsFont = async (pdf: jsPDF): Promise<void> => {
+  const response = await fetch('/fonts/Poppins-SemiBold.ttf', {
+    cache: 'force-cache',
+  });
+  if (!response.ok) {
+    throw new Error(`Failed to load Poppins font: ${response.status}`);
+  }
+
+  const fontBytes = new Uint8Array(await response.arrayBuffer());
+  let binary = '';
+  const chunkSize = 0x8000;
+
+  for (let index = 0; index < fontBytes.length; index += chunkSize) {
+    binary += String.fromCharCode(
+      ...fontBytes.subarray(index, index + chunkSize),
+    );
+  }
+
+  pdf.addFileToVFS('Poppins-SemiBold.ttf', btoa(binary));
+  pdf.addFont('Poppins-SemiBold.ttf', 'Poppins', 'normal');
+};
 
 const cropLogoContent = async (dataUrl: string): Promise<string> => {
   return await new Promise((resolve, reject) => {
@@ -451,6 +478,32 @@ export default function StudentProfile({
     );
   };
 
+    const subjectDisplayMap: Record<string, string> = {
+    'engineering technology': 'ET',
+    'bio systems technology': 'BST',
+    'science for technology': 'SFT',
+    'information communication technology': 'ICT',
+    'agricultural science': 'Agriculture',
+    mathematics: 'Mathematics',
+    geography: 'Geography',
+  };
+
+  const getSubjectDisplay = (subject: any): string => {
+    const subjectName = String(subject?.name || subject || '')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ');
+
+    return (
+      subjectDisplayMap[subjectName] || String(subject?.name || subject || '')
+    );
+  };
+
+  const subjects =
+    studentModules.length > 0
+      ? studentModules.map((module: any) => getSubjectDisplay(module)).join(' • ')
+      : 'N/A';
+
   const handleDownloadPDF = async () => {
     const toastId = toast.loading('Generating student ID card...');
 
@@ -465,10 +518,10 @@ export default function StudentProfile({
         compress: true,
       });
 
-      const rawLogoDataUrl = await imageToDataUrl('/new.png');
-      const logoDataUrl = rawLogoDataUrl
-        ? await cropLogoContent(rawLogoDataUrl)
-        : null;
+      await loadPoppinsFont(pdf);
+
+      const rawLogoDataUrl = await imageToDataUrl('/ad_Logo.png');
+      const logoDataUrl = rawLogoDataUrl;
       const studentPhotoUrl = findStudentPhotoUrl(s);
       const studentPhotoDataUrl = await loadStudentPhotoForPdf(studentPhotoUrl);
 
@@ -505,11 +558,6 @@ export default function StudentProfile({
 
       const nicNumber = String(s.nicNo || s.nic || 'N/A');
 
-      const subjects =
-        studentModules.length > 0
-          ? studentModules.map((module: any) => module.name).join(' • ')
-          : 'N/A';
-
       const blue = [17, 151, 239] as const;
       const darkBlue = [6, 48, 111] as const;
 
@@ -527,7 +575,7 @@ export default function StudentProfile({
         const logoRatio = logoProps.width / logoProps.height;
 
         const maxLogoWidth = 31;
-        const maxLogoHeight = 9.5;
+        const maxLogoHeight = 10.5;
 
         let logoWidth = maxLogoWidth;
         let logoHeight = logoWidth / logoRatio;
@@ -538,7 +586,7 @@ export default function StudentProfile({
         }
 
         const logoX = 4;
-        const logoY = 1.7;
+        const logoY = 2;
 
         pdf.addImage(
           logoDataUrl,
@@ -552,15 +600,10 @@ export default function StudentProfile({
         );
       } else {
         pdf.setTextColor(...darkBlue);
-        pdf.setFont('helvetica', 'bold');
+        pdf.setFont('Poppins', 'normal');
         pdf.setFontSize(8);
         pdf.text('TECHNA', 16.75, 7.6, { align: 'center' });
       }
-
-      pdf.setTextColor(255, 255, 255);
-      pdf.setFont('helvetica', 'bold');
-      pdf.setFontSize(5.6);
-      pdf.text('A/L TECHNOLOGY STREAM', 4, 13.4);
 
       // QR box
       pdf.setFillColor(255, 255, 255);
@@ -606,7 +649,7 @@ export default function StudentProfile({
       const name = studentName.toUpperCase();
 
       pdf.setTextColor(...darkBlue);
-      pdf.setFont('helvetica', 'bold');
+      pdf.setFont('Poppins', 'normal');
       pdf.setFontSize(8.2);
 
       let nameSize = 8.2;
@@ -632,10 +675,13 @@ export default function StudentProfile({
         maxWidth = 28,
       ) => {
         pdf.setTextColor(...darkBlue);
-        pdf.setFont('helvetica', 'bold');
+        pdf.setFont('Poppins', 'normal');
         pdf.setFontSize(5.4);
         pdf.text(label, labelX, y);
         pdf.text(':', colonX, y);
+
+        // Student value - Black
+        pdf.setTextColor(0, 0, 0);
 
         let valueSize = 5.4;
         pdf.setFontSize(valueSize);
@@ -649,26 +695,35 @@ export default function StudentProfile({
       };
 
       drawRow('Admission No.', admissionNumber, 26.8);
-      drawRow('Batch', String(s.batch || 'N/A'), 31);
+      drawRow("Batch", `A|L ${s.batch || "N/A"}`, 31);
       drawRow('Issued', issuedDate, 35.2);
       drawRow('NIC', nicNumber, 39.4);
 
       pdf.setTextColor(...darkBlue);
-      pdf.setFont('helvetica', 'bold');
+      pdf.setFont('Poppins', 'normal');
       pdf.setFontSize(5.4);
       pdf.text('Subjects', labelX, 43.6);
       pdf.text(':', colonX, 43.6);
 
-      pdf.setFontSize(4.8);
-      const subjectLines = pdf.splitTextToSize(subjects, 28.5);
-      pdf.text(subjectLines.slice(0, 2), valueX, 43.6);
+      // Student value - Black
+      pdf.setTextColor(0, 0, 0);
+      pdf.setFont('Poppins', 'normal');
+      let subjectFontSize = 4.8;
+      pdf.setFontSize(subjectFontSize);
+
+      while (pdf.getTextWidth(subjects) > 28 && subjectFontSize > 3.4) {
+        subjectFontSize -= 0.2;
+        pdf.setFontSize(subjectFontSize);
+      }
+
+      pdf.text(subjects, valueX, 43.6);
 
       // Footer
       pdf.setFillColor(...blue);
       pdf.rect(0.5, 47.5, cardWidth - 1, 6, 'F');
 
       pdf.setTextColor(255, 255, 255);
-      pdf.setFont('helvetica', 'bold');
+      pdf.setFont('Poppins', 'normal');
       pdf.setFontSize(6.3);
       pdf.text('www.techna.lk', 4.5, 51.4);
 
@@ -893,7 +948,7 @@ export default function StudentProfile({
                         {formatStudentId(s.studentId)}
                       </p>
                       <p className="text-[12px] text-indigo-100">
-                        {getValue(s.batch)}
+                        A/L {getValue(s.batch)} Batch
                       </p>
                     </div>
                   </div>
@@ -976,7 +1031,7 @@ export default function StudentProfile({
 
                 <div className="flex h-8 items-center justify-center rounded-b-2xl bg-slate-50 px-4 text-center">
                   <p className="text-xs text-blue-400">
-                    Techna - School Management System
+                    My Techna
                   </p>
                 </div>
               </div>
