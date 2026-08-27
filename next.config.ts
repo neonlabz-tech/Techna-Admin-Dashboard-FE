@@ -31,6 +31,24 @@ const nextConfig:NextConfig = {
         }
     ],
   },
+  
+  // Optimize production build
+  swcMinify: true,
+  
+  // Enable production source maps for debugging (optional, disable for smaller builds)
+  productionBrowserSourceMaps: false,
+  
+  // Optimize JavaScript and CSS
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
+  },
+  
+  // Experimental features for better performance
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'recharts', 'date-fns'],
+  },
 
 };
 
