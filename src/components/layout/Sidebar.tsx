@@ -63,11 +63,14 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         />
       )}
 
-      <aside
-        className={`fixed top-0 left-0 z-[70] h-full w-64 bg-gradient-to-b from-indigo-950 to-indigo-900 flex flex-col transform transition-transform duration-300 ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        } lg:translate-x-0 lg:static lg:z-auto`}
-      >
+        <aside
+          className={`fixed top-0 left-0 z-[70] h-full w-64 flex flex-col transform transition-transform duration-300 ${
+            isOpen ? 'translate-x-0' : '-translate-x-full'
+          } lg:translate-x-0 lg:static lg:z-auto`}
+          style={{
+            background: 'linear-gradient(90deg, #0075B8 0%, #34BFF3 100%)',
+          }}
+        >
         <div className="relative border-b border-white/10 pt-6 pb-5">
           <div className="flex flex-col items-start pl-6">
            <div className="relative h-[85px] w-full max-w-[220px]">
@@ -107,8 +110,8 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
                 href={path}
                 className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-150 ${
                   isActive
-                    ? 'bg-white/15 text-white shadow-sm'
-                    : 'text-indigo-200 hover:bg-white/10 hover:text-white'
+                    ? 'bg-white/20 text-white shadow-sm'
+                    : 'text-white/80 hover:bg-white/10 hover:text-white'
                 }`}
                 onClick={() => setIsOpen(false)}
               >
@@ -122,7 +125,7 @@ export default function Sidebar({ isOpen, setIsOpen }: SidebarProps) {
         <div className="p-3 border-t border-white/10">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-indigo-200 hover:bg-red-500/20 hover:text-red-300 transition-all w-full"
+            className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium text-white/80 hover:bg-red-500/20 hover:text-red-300 transition-all w-full"
           >
             <LogOut className="w-4 h-4" />
             Sign Out
