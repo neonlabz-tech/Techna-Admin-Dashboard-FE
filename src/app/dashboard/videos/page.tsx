@@ -8,6 +8,7 @@ import CompactSelect from '@/components/ui/CompactSelect';
 import { Play, Upload, Search, Video, Eye, EyeOff, RefreshCw } from 'lucide-react';
 import { useToast } from '@/hooks/useToast';
 import Toast from '@/components/common/Toast';
+import { useDataStore } from '@/store/dataStore';
 
 function extractErrorMessage(err: unknown): string {
   if (isAxiosError(err)) {
@@ -104,15 +105,23 @@ const capitalizeWords = (str: string) =>
 
 export default function VideosPage() {
   const { toasts, addToast, removeToast } = useToast();
+  const { students, fetchStudents } = useDataStore();
+
+  const BATCHES = Array.from(
+    new Set(students.map((s: any) => s.batch).filter(Boolean))
+  ) as string[];
+
   const [modules, setModules] = useState<ApiModule[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterModule, setFilterModule] = useState('all');
+  const [filterBatch, setFilterBatch] = useState('');
   const [filterPublish, setFilterPublish] = useState<'all' | 'published' | 'unpublished'>('all');
   const [search, setSearch] = useState('');
   const [playVideo, setPlayVideo] = useState<VideoItem | null>(null);
   const [uploadOpen, setUploadOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadModuleId, setUploadModuleId] = useState('');
+  const [uploadBatch, setUploadBatch] = useState('');
   const [uploadTitle, setUploadTitle] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [thumbnailUrl, setThumbnailUrl] = useState('');
@@ -127,14 +136,19 @@ export default function VideosPage() {
 
   useEffect(() => { fetchModules(); }, [fetchModules]);
 
+  useEffect(() => { fetchStudents(); }, [fetchStudents]);
+
   const videos: VideoItem[] = modules.flatMap(m =>
     m.resources
       .filter(r => r.fileType === 'video')
       .map(r => ({ ...r, moduleName: m.name, moduleId: m._id }))
   );
 
+  const subjectModules = modules.filter(m => !uploadBatch || m.batch === uploadBatch);
+
   const filtered = videos.filter(v =>
     (filterModule === 'all' || v.moduleId === filterModule) &&
+    (filterBatch === '' || (v as any).batch === filterBatch) &&
     (search === '' || v.title.toLowerCase().includes(search.toLowerCase())) &&
     (filterPublish === 'all' ||
       (filterPublish === 'published' && v.isPublished) ||
@@ -143,7 +157,7 @@ export default function VideosPage() {
 
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!uploadModuleId || !videoUrl) return;
+    if (!uploadModuleId || !uploadBatch || !videoUrl) return;
 
     const validationError = validateVideoForm({
       title: uploadTitle,
@@ -162,6 +176,7 @@ export default function VideosPage() {
         thumbnailUrl: thumbnailUrl || undefined,
         fileType: 'video',
         description: description || undefined,
+        batch: uploadBatch,
       });
       addToast('Video added successfully', 'success');
       setUploadOpen(false);
@@ -170,6 +185,7 @@ export default function VideosPage() {
       setThumbnailUrl('');
       setDescription('');
       setUploadModuleId('');
+      setUploadBatch('');
       fetchModules();
     } catch (err: unknown) {
       addToast(extractErrorMessage(err), 'error');
@@ -259,6 +275,18 @@ export default function VideosPage() {
           ]}
         />
         <CompactSelect
+          value={filterBatch}
+          onChange={setFilterBatch}
+          className="w-full sm:w-44"
+          options={[
+            { value: '', label: 'All Batches' },
+            ...BATCHES.map(batch => ({
+              value: batch,
+              label: batch,
+            })),
+          ]}
+        />
+        <CompactSelect
           value={filterPublish}
           onChange={value => setFilterPublish(value as 'all' | 'published' | 'unpublished')}
           className="w-full sm:w-44"
@@ -339,16 +367,24 @@ export default function VideosPage() {
       >
         <form onSubmit={handleUpload} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Module</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Batch</label>
+            <CompactSelect
+              value={uploadBatch}
+              onChange={value => { setUploadBatch(value); setUploadModuleId(''); }}
+              options={[
+                { value: '', label: 'Select batch...' },
+                ...BATCHES.map(batch => ({ value: batch, label: batch })),
+              ]}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
             <CompactSelect
               value={uploadModuleId}
               onChange={setUploadModuleId}
               options={[
-                { value: '', label: 'Select module...' },
-                ...modules.map(m => ({
-                  value: m._id,
-                  label: `${capitalizeWords(m.name)} (${m.batch})`,
-                })),
+                { value: '', label: 'Select subject...' },
+                ...subjectModules.map(m => ({ value: m._id, label: capitalizeWords(m.name) })),
               ]}
             />
           </div>

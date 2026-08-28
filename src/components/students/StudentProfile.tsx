@@ -138,13 +138,23 @@ const getImageFormat = (dataUrl: string) => {
 
 
 const findStudentPhotoUrl = (student: any): string => {
-  return (
-    student?.avatar ||
+  const photo =
     student?.profilePhoto ||
-    student?.profile_image ||
     student?.profileImage ||
-    ''
-  );
+    student?.profile_image ||
+    student?.profileImageUrl ||
+    student?.photoUrl ||
+    student?.avatar ||
+    '';
+
+  const cleaned = String(photo).trim().replace(/["'*]/g, '');
+  if (!cleaned) return '';
+
+  try {
+    return new URL(cleaned, window.location.origin).toString();
+  } catch {
+    return cleaned;
+  }
 };
 
 const loadImageThroughCanvas = async (src: string): Promise<string | null> => {
@@ -191,11 +201,11 @@ const loadStudentPhotoForPdf = async (
   ];
 
   for (const candidate of candidates) {
-    const fetched = await imageToDataUrl(candidate);
-    if (fetched) return fetched;
-
     const canvasImage = await loadImageThroughCanvas(candidate);
     if (canvasImage) return canvasImage;
+
+    const fetched = await imageToDataUrl(candidate);
+    if (fetched) return fetched;
   }
 
   return null;
