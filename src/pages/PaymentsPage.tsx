@@ -1301,7 +1301,7 @@ export default function PaymentsPage() {
   const [error,        setError]        = useState<string | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [editPayment,  setEditPayment]  = useState<PaymentRecord | null>(null);
-  const [trackingYear, setTrackingYear] = useState(new Date().getFullYear());
+  const [trackingYear, setTrackingYear] = useState<number | null>(null);
 
   const [search,       setSearch]       = useState('');
   const [filterBatch,  setFilterBatch]  = useState('');
@@ -1344,6 +1344,7 @@ export default function PaymentsPage() {
   const filtered = payments.filter(p => {
     const q = search.toLowerCase();
     return (
+      (trackingYear === null || new Date(p.paidDate).getFullYear() === trackingYear) &&
       (!search       || p.studentName.toLowerCase().includes(q) || p.receiptNo.toLowerCase().includes(q)) &&
       (!filterBatch  || p.batch    === filterBatch)  &&
       (!filterModule || p.moduleId === filterModule) &&
@@ -2063,17 +2064,15 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
               ]}
             />
             <CompactSelect
-                value={String(trackingYear)}
-                onChange={value => setTrackingYear(Number(value))}
+                value={trackingYear === null ? '' : String(trackingYear)}
+                onChange={value => setTrackingYear(value ? Number(value) : null)}
                 className="w-full sm:w-28"
                 options={[
-                  { value: String(trackingYear), label: 'Year' },
-                  ...yearOptions
-                    .filter(y => y !== trackingYear)
-                    .map(y => ({
-                      value: String(y),
-                      label: String(y),
-                    })),
+                  { value: '', label: 'All Years' },
+                  ...yearOptions.map(y => ({
+                    value: String(y),
+                    label: String(y),
+                  })),
                 ]}
               />
           </div>
@@ -2120,17 +2119,15 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
               />
 
               <CompactSelect
-                value={String(trackingYear)}
-                onChange={value => setTrackingYear(Number(value))}
+                value={trackingYear === null ? '' : String(trackingYear)}
+                onChange={value => setTrackingYear(value ? Number(value) : null)}
                 className="w-full sm:w-28"
                 options={[
-                  { value: String(trackingYear), label: 'Year' },
-                  ...yearOptions
-                    .filter(y => y !== trackingYear)
-                    .map(y => ({
-                      value: String(y),
-                      label: String(y),
-                    })),
+                  { value: '', label: 'All Years' },
+                  ...yearOptions.map(y => ({
+                    value: String(y),
+                    label: String(y),
+                  })),
                 ]}
               />
             </div>
@@ -2143,7 +2140,7 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
             studentId={s.studentId}
             studentName={s.studentName}
             payments={s.payments}
-            year={trackingYear}
+            year={trackingYear ?? currentYear}
             token={token}
             onDownloadSlip={generatePaymentSlip}
             onDownloadAllSlips={generateStudentAllSlip}
@@ -2187,7 +2184,7 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
   studentName={s.studentName}
   studentIdCode={s.studentCode}
   payments={s.payments}
-  year={trackingYear}
+  year={trackingYear ?? currentYear}
   token={token}
   onDownloadSlip={generatePaymentSlip}
   onDownloadAllSlips={generateStudentAllSlip}

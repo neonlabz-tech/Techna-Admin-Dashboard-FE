@@ -284,6 +284,7 @@ export const addResourceUrl = (
     thumbnailUrl?: string;
     fileType: string;
     description?: string;
+    batch: string;
   }
 ): Promise<ApiResource> =>
   api.post(`/api/modules/${moduleId}/add-resource-url`, data)
