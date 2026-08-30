@@ -153,7 +153,7 @@ export default function CompactDatePicker({
                   }}
                   className={`h-8 rounded-lg text-xs font-semibold ${
                     selected
-                      ? 'bg-indigo-600 text-white'
+                      ? 'bg-[#34BFF3] text-white'
                       : disabled
                         ? 'cursor-not-allowed text-gray-300'
                         : 'text-gray-700 hover:bg-indigo-50'

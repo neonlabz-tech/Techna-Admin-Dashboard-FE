@@ -626,7 +626,7 @@ export default function StudentsPage() {
 
         <button
           onClick={openAdd}
-          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+          className="flex items-center gap-2 bg-[#34BFF3] hover:bg-[#1DA1E2] text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors"
         >
           <Plus className="w-4 h-4" /> Add Student
         </button>
@@ -828,7 +828,7 @@ export default function StudentsPage() {
                 <button
                   type="button"
                   onClick={addOlRow}
-                  className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-700"
+                  className="flex items-center gap-1.5 rounded-lg bg-[#34BFF3] px-3 py-2 text-xs font-semibold text-white hover:bg-[#1DA1E2]"
                 >
                   <Plus className="h-3.5 w-3.5" />
                   Add Row
@@ -1066,7 +1066,7 @@ export default function StudentsPage() {
 
               <button
                 type="submit"
-                className="flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700"
+                className="flex-1 px-4 py-2.5 bg-[#34BFF3] text-white rounded-xl text-sm font-medium hover:bg-[#1DA1E2]"
               >
                 Update Student
               </button>

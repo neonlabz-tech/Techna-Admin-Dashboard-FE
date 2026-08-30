@@ -68,7 +68,7 @@ export default function ProfilePage() {
           {/* Profile Banner Card */}
           <div className="rounded-2xl border border-[#F1F5F9] bg-white p-4 shadow-[0px_1px_2px_rgba(0,0,0,0.05)] sm:p-6">
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-center sm:gap-6">
-              <div className="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-2xl bg-[#4F46E5] shadow-[0px_20px_25px_-5px_#E0E7FF,0px_8px_10px_-6px_#E0E7FF] sm:h-[96px] sm:w-[96px]">
+              <div className="flex h-[72px] w-[72px] shrink-0 items-center justify-center rounded-2xl bg-[#1DA1E2] shadow-[0px_20px_25px_-5px_#E0E7FF,0px_8px_10px_-6px_#E0E7FF] sm:h-[96px] sm:w-[96px]">
                 <span className="text-3xl font-bold text-white sm:text-4xl">
                   {initial}
                 </span>
@@ -76,13 +76,13 @@ export default function ProfilePage() {
 
               <div className="min-w-0 text-center sm:text-left">
                 <h2 className="text-xl font-bold leading-8 text-[#0F172A] sm:text-2xl">
-                  {user?.name ?? 'Super Admin'}
+                 MY TECHNA
                 </h2>
                 <p className="mt-0.5 text-sm font-medium leading-6 text-[#64748B] sm:text-base">
                   {user?.email ?? 'admin@eduadmin.com'}
                 </p>
                 <span className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-[#E0E7FF] bg-[#EEF2FF] px-3 py-[3px] text-xs font-semibold text-[#4338CA] sm:mt-3">
-                  <Shield className="h-3 w-3 shrink-0 text-[#4338CA]" />
+                  <Shield className="h-3 w-3 shrink-0 text-[#1DA1E2]" />
                   Super Administrator
                 </span>
               </div>
@@ -163,7 +163,7 @@ export default function ProfilePage() {
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="inline-flex h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#4F46E5] px-6 text-sm font-bold text-white shadow-[0px_20px_25px_-5px_#C7D2FE,0px_8px_10px_-6px_#C7D2FE] transition hover:bg-[#4338CA] disabled:opacity-50 sm:h-[56px] sm:w-auto sm:gap-3 sm:rounded-2xl sm:px-8 sm:text-base"
+                  className="inline-flex h-[48px] w-full items-center justify-center gap-2 rounded-xl bg-[#1DA1E2] px-6 text-sm font-bold text-white shadow-[0px_20px_25px_-5px_#C7D2FE,0px_8px_10px_-6px_#C7D2FE] transition hover:bg-[#4338CA] disabled:opacity-50 sm:h-[56px] sm:w-auto sm:gap-3 sm:rounded-2xl sm:px-8 sm:text-base"
                 >
                   <Save className="h-5 w-5" />
                   {saving ? 'Saving…' : 'Save Personal Details'}

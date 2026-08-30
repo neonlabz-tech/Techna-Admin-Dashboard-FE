@@ -624,7 +624,7 @@ function PaymentModal({
                             onClick={() => toggleSubject(m.id)}
                             className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${
                               checked
-                                ? 'bg-indigo-600 border-indigo-600 text-white'
+                                ? 'bg-[#34BFF3] border-indigo-600 text-white'
                                 : 'bg-white border-gray-200 text-gray-600 hover:border-indigo-300 hover:text-indigo-600'
                             }`}
                           >
@@ -803,7 +803,7 @@ function PaymentModal({
             Cancel
           </button>
           <button onClick={handleSubmit} disabled={saving}
-            className="flex items-center gap-2 px-5 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-sm font-medium rounded-xl transition-colors">
+            className="flex items-center gap-2 px-5 py-2 bg-[#34BFF3] hover:bg-[#1DA1E2] disabled:opacity-50 text-white text-sm font-medium rounded-xl transition-colors">
             {saving
               ? <Loader2 className="w-4 h-4 animate-spin" />
               : isEdit
@@ -1971,7 +1971,7 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} /> Refresh
           </button>
           <button onClick={() => setShowAddModal(true)}
-            className="flex items-center justify-center gap-1.5 rounded-lg bg-indigo-600 px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-indigo-700 sm:gap-2 sm:rounded-xl sm:px-4 sm:text-sm">
+            className="flex items-center justify-center gap-1.5 rounded-lg bg-[#34BFF3] px-3 py-2 text-xs font-medium text-white transition-colors hover:bg-[#1DA1E2] sm:gap-2 sm:rounded-xl sm:px-4 sm:text-sm">
             <Plus className="w-4 h-4" /> Add Payment
           </button>
           <button onClick={generateAllPDF}
@@ -2209,7 +2209,7 @@ const yearOptions = Array.from({ length: 5 }, (_, i) => currentYear - 2 + i);
       <button
         type="button"
         onClick={() => setShowAddModal(true)}
-        className="fixed bottom-5 right-5 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-200 md:hidden"
+        className="fixed bottom-5 right-5 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-[#34BFF3] text-white shadow-lg shadow-indigo-200 md:hidden"
         aria-label="Add payment"
       >
         <CreditCard className="h-5 w-5" />

@@ -143,7 +143,7 @@ export function SubjectMultiSelect({
                   className={`w-full flex items-center gap-2.5 text-left px-3 py-2 text-sm transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${checked ? 'bg-indigo-50 text-indigo-700' : 'text-gray-700 hover:bg-gray-50'}`}
                 >
                   <span
-                    className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${checked ? 'bg-indigo-600 border-indigo-600' : 'border-gray-300 bg-white'}`}
+                    className={`flex h-4 w-4 shrink-0 items-center justify-center rounded border ${checked ? 'bg-[#34BFF3] border-indigo-600' : 'border-gray-300 bg-white'}`}
                   >
                     {checked && <Check className="w-3 h-3 text-white" />}
                   </span>
@@ -168,7 +168,7 @@ export function SubjectMultiSelect({
             <button
               type="button"
               onClick={() => { setQuery(''); setOpen(false); }}
-              className="rounded-md bg-indigo-600 px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-indigo-700"
+              className="rounded-md bg-[#34BFF3] px-4 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[#1DA1E2]"
             >
               Done
             </button>

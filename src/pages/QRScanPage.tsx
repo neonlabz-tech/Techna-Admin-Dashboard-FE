@@ -198,7 +198,7 @@ export default function QRScanPage() {
           {cameraError && <p className="text-xs text-red-500">{cameraError}</p>}
           {!cameraError && <p className="text-xs text-gray-400">{cameraActive ? 'Scanning… point at student QR code' : 'Click to start camera'}</p>}
           <button onClick={toggleCamera}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${cameraActive ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'bg-indigo-600 text-white hover:bg-indigo-700'}`}>
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-colors ${cameraActive ? 'bg-red-100 text-red-600 hover:bg-red-200' : 'bg-[#34BFF3] text-white hover:bg-[#1DA1E2]'}`}>
             {cameraActive ? <><CameraOff className="w-4 h-4" /> Stop</> : <><Camera className="w-4 h-4" /> Start Camera</>}
           </button>
         </div>
@@ -217,7 +217,7 @@ export default function QRScanPage() {
               className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm"
             />
           </div>
-          <button onClick={handleSearch} className="px-4 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors">
+          <button onClick={handleSearch} className="px-4 py-2.5 bg-[#34BFF3] text-white rounded-xl hover:bg-[#1DA1E2] transition-colors">
             <Search className="w-4 h-4" />
           </button>
         </div>

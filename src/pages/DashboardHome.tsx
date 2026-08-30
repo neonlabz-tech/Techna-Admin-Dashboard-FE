@@ -680,7 +680,7 @@ export default function DashboardHome() {
                 key={e.id || e._id}
                 className="flex items-start gap-3 rounded-xl bg-indigo-50 p-3"
               >
-                <div className="flex h-10 w-10 flex-shrink-0 flex-col items-center justify-center rounded-xl bg-indigo-600 text-white">
+                <div className="flex h-10 w-10 flex-shrink-0 flex-col items-center justify-center rounded-xl bg-[#34BFF3] text-white">
                   <span className="text-xs font-bold">
                     {e.date ? new Date(e.date).getDate() : '-'}
                   </span>

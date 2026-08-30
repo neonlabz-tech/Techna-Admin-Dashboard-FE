@@ -295,7 +295,7 @@ export default function ModulesPage() {
         </div>
         <button
           onClick={openAdd}
-          className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors"
+          className="flex items-center gap-2 bg-[#34BFF3] hover:bg-[#1DA1E2] text-white px-4 py-2 rounded-xl text-sm font-medium transition-colors"
         >
           <Plus className="w-4 h-4" /> Add Module
         </button>
@@ -384,7 +384,7 @@ export default function ModulesPage() {
           {!search && (
             <button
               onClick={openAdd}
-              className="mt-3 inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
+              className="mt-3 inline-flex items-center gap-1.5 bg-[#34BFF3] hover:bg-[#1DA1E2] text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-colors"
             >
               <Plus className="w-3.5 h-3.5" /> Add Module
             </button>
@@ -553,7 +553,7 @@ export default function ModulesPage() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 disabled:opacity-60"
+                className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-[#34BFF3] text-white rounded-xl text-sm font-medium hover:bg-[#1DA1E2] disabled:opacity-60"
               >
                 {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                 {editId ? 'Update' : 'Create'} Module

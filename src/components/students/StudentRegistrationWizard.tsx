@@ -392,7 +392,7 @@ export default function StudentRegistrationWizard({
                   done
                     ? 'border-green-500 bg-green-500 text-white'
                     : active
-                      ? 'border-indigo-600 bg-indigo-600 text-white'
+                      ? 'border-indigo-600 bg-[#34BFF3] text-white'
                       : 'border-gray-200 text-gray-400'
                 }`}
               >
@@ -939,7 +939,7 @@ export default function StudentRegistrationWizard({
           <button
             type="button"
             onClick={() => validateStep() && setStep((s) => s + 1)}
-            className="flex items-center gap-2 rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-indigo-700"
+            className="flex items-center gap-2 rounded-xl bg-[#34BFF3] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#1DA1E2]"
           >
             Next <ChevronRight className="h-4 w-4" />
           </button>

@@ -10,6 +10,13 @@ body {
   padding: 0;
 }
 
+@theme{
+  --color-primary: #34BFF3;
+  --color-primary-hover: #1DA1E2;
+  --color-primary-active: #0D8ED9;
+  --color-secondary: #0075B8;
+}
+
 * {
   box-sizing: border-box;
 }

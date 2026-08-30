@@ -377,7 +377,7 @@ export default function AttendancePage() {
           type="button"
           onClick={downloadAttendanceExcel}
           disabled={filteredAttendances.length === 0 || isExporting}
-          className="flex shrink-0 items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm"
+          className="flex shrink-0 items-center gap-2 rounded-lg bg-[#1DA1E2] px-3 py-2 text-xs font-semibold text-white shadow-sm transition-colors hover:bg-[#34BFF3] disabled:cursor-not-allowed disabled:opacity-50 sm:rounded-xl sm:px-4 sm:py-2.5 sm:text-sm"
           title="Download filtered attendance as Excel"
         >
           <Download className="h-4 w-4" />
@@ -946,7 +946,7 @@ export default function AttendancePage() {
       <button
         type="button"
         onClick={() => router.push("/dashboard/qr-scan")}
-        className="fixed bottom-5 right-5 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600 text-white shadow-lg shadow-indigo-200 md:hidden"
+        className="fixed bottom-5 right-5 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-[#34BFF3] text-white shadow-lg shadow-indigo-200 md:hidden"
         aria-label="Scan QR"
       >
         <Plus className="h-5 w-5" />
@@ -1005,7 +1005,7 @@ export default function AttendancePage() {
             <button
               type="button"
               onClick={() => setContactTarget(null)}
-              className="mt-5 w-full rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-700"
+              className="mt-5 w-full rounded-xl bg-[#34BFF3] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1DA1E2]"
             >
               Close
             </button>

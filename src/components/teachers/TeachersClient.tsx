@@ -329,7 +329,7 @@ export default function TeachersPage() {
         </div>
         <button
           onClick={openAdd}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-indigo-700 sm:w-auto"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#34BFF3] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1DA1E2] sm:w-auto"
         >
           <Plus className="w-4 h-4" /> Add Teacher
         </button>

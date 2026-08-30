@@ -436,11 +436,12 @@ export default function DashboardLayout({
             </div>
 
             <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">
+              <div className="w-8 h-8 rounded-lg bg-[#34BFF3] flex items-center justify-center text-white font-bold text-xs">
                 {user?.name?.charAt(0).toUpperCase() || 'U'}
               </div>
               <span className="text-sm font-medium text-gray-700 hidden sm:block">
-                {user?.name || 'User'}
+                {/* {user?.name || 'User'} */}
+                MY TECHNA
               </span>
             </div>
           </div>

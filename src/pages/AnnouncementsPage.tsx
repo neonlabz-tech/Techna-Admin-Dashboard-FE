@@ -258,7 +258,7 @@ function CompactDatePicker({
                   onClick={() => selectDay(day)}
                   className={`h-8 rounded-lg text-xs font-semibold ${
                     selected
-                      ? 'bg-indigo-600 text-white'
+                      ? 'bg-[#34BFF3] text-white'
                       : 'text-slate-700 hover:bg-indigo-50'
                   }`}
                 >
@@ -486,7 +486,7 @@ export default function AnnouncementsPage() {
             <button
               onClick={handleSubmit}
               disabled={loading}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-6 text-sm font-semibold text-white shadow-md shadow-indigo-200 hover:bg-indigo-700 disabled:opacity-60"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-[#34BFF3] px-6 text-sm font-semibold text-white shadow-md shadow-indigo-200 hover:bg-[#1DA1E2] disabled:opacity-60"
             >
               <CheckCircle2 className="h-4 w-4" />
               {editingId ? 'Update Announcement' : 'Post Announcement'}
@@ -650,7 +650,7 @@ onClick={() => setDeleteItem(item)}
             <button className="px-2 text-slate-400" type="button">
               &lt;
             </button>
-            <span className="rounded bg-indigo-600 px-3 py-2 font-semibold text-white">
+            <span className="rounded bg-[#34BFF3] px-3 py-2 font-semibold text-white">
               1
             </span>
             <button className="px-2 text-slate-400" type="button">

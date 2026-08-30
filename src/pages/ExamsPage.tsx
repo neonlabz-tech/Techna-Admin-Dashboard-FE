@@ -364,7 +364,7 @@ pdf.text(
 
           <button
             onClick={openAdd}
-          className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors"          >
+          className="flex items-center justify-center gap-2 bg-[#34BFF3] hover:bg-[#1DA1E2] text-white px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors"          >
             <Plus className="w-4 h-4" /> Publish Exam
           </button>
         </div>
@@ -399,7 +399,7 @@ pdf.text(
             className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 h-full flex flex-col"
           >
             <div className="flex items-start gap-3 mb-3">
-              <div className="w-12 h-12 bg-indigo-600 rounded-xl flex flex-col items-center justify-center text-white">
+              <div className="w-12 h-12 bg-[#34BFF3] rounded-xl flex flex-col items-center justify-center text-white">
                 <span className="text-sm font-bold">
                   {new Date(e.date).getDate()}
                 </span>
@@ -628,7 +628,7 @@ pdf.text(
 
             <button
               type="submit"
-              className="flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700"
+              className="flex-1 px-4 py-2.5 bg-[#34BFF3] text-white rounded-xl text-sm font-medium hover:bg-[#1DA1E2]"
             >
               {editExam ? 'Update' : 'Publish'} Exam
             </button>

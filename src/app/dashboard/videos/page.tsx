@@ -251,7 +251,7 @@ export default function VideosPage() {
           >
             <RefreshCw className={`w-4 h-4 ${syncing ? 'animate-spin' : ''}`} /> {syncing ? 'Syncing...' : 'Sync with R2'}
           </button>
-          <button onClick={() => setUploadOpen(true)} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm font-medium">
+          <button onClick={() => setUploadOpen(true)} className="flex items-center gap-2 bg-[#34BFF3] hover:bg-[#1DA1E2] text-white px-4 py-2 rounded-xl text-sm font-medium">
             <Upload className="w-4 h-4" /> Add Video
           </button>
         </div>
@@ -418,7 +418,7 @@ export default function VideosPage() {
               Cancel
             </button>
             <button type="submit" disabled={uploading}
-              className="flex-1 px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-medium hover:bg-indigo-700 disabled:opacity-60">
+              className="flex-1 px-4 py-2.5 bg-[#34BFF3] text-white rounded-xl text-sm font-medium hover:bg-[#1DA1E2] disabled:opacity-60">
               {uploading ? 'Adding...' : 'Add Video'}
             </button>
           </div>
